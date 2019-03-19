@@ -22,7 +22,7 @@ describe('async hook tests', () => {
   })
 
   afterEach(() => {
-    jest.useFakeTimers()
+    jest.useRealTimers()
     cleanup()
   })
 
