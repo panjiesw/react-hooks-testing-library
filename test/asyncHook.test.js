@@ -17,18 +17,6 @@ describe('async hook tests', () => {
     return name
   }
 
-  const useNonNobodyName = (prefix) => {
-    const [name, setName] = useState('nobody')
-
-    useEffect(() => {
-      getSomeName().then((theName) => {
-        setName(prefix ? `${prefix} ${theName}` : theName)
-      })
-    }, [prefix])
-
-    return [name, setName]
-  }
-
   beforeEach(() => {
     jest.useFakeTimers()
   })
@@ -38,20 +26,16 @@ describe('async hook tests', () => {
     cleanup()
   })
 
-  test('should update when not nobody', () => {
-    const { result } = renderHook(() => useNonNobodyName())
+  test('should update without warning', () => {
+    const { result } = renderHook(() => useName())
 
-    expect(result.current[0]).toBe('nobody')
-
-    act(() => {
-      result.current[1]('someone')
-    })
+    expect(result.current).toBe('nobody')
 
     act(() => {
       jest.runAllTimers()
     })
 
-    expect(result.current[0]).toBe('Betty')
+    expect(result.current).toBe('Betty')
   })
 
   test.skip('should wait for next update', async () => {
